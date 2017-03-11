@@ -1,0 +1,29 @@
+{
+  "name": "phoenix",
+  "version": "0.0.1",
+  "description": "A simple Expressjs Web server on resin.io",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kynan/resin-io-phoenix.git"
+  },
+  "keywords": [
+    "resin.io",
+    "webserver",
+    "nodejs",
+    "expressjs"
+  ],
+  "author": "Florian Rathgeber <florian.rathgeber@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kynan/resin-io-phoenix/issues"
+  },
+  "homepage": "https://github.com/kynan/resin-io-phoenix#readme",
+  "dependencies": {
+    "express": "*"
+  }
+}
