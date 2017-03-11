@@ -1,0 +1,12 @@
+[Unit]
+Description=Phoenix
+
+[Service]
+ExecStart=/usr/src/app/server.js
+Restart=always
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production N=%i
+WorkingDirectory=/usr/src/app
+
+[Install]
+WantedBy=multi-user.target
