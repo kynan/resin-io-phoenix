@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 
-console.log('Hello from process', process.env.N || 0)
+const me = parseInt(process.env.N || 0),
+      nProcs = parseInt(process.env.NPROCS || 4),
+      base = parseInt(process.env.PORT || 8000);
+
+console.log(`Hello World from process ${me}/${nProcs}!`);
 
 let crypto = require('crypto'),
     express = require('express'),
@@ -14,7 +18,7 @@ let checksum = (str, algorithm, encoding) =>
     .digest(encoding || 'hex');
 
 // reply to request with "Hello World!"
-app.get('/', (req, res) => res.send(`Hello World from process ${process.env.N || 0}!`));
+app.get('/', (req, res) => res.send(`Hello World from process ${me}!`));
 
 // Send SHA1 checksum of running application
 // TODO: compute checksum of application image in memory
@@ -25,6 +29,6 @@ app.get('/checksum', (req, res) =>
 );
 
 //start a server on port 8000 + $N and log its start to our console
-let server = app.listen(parseInt(process.env.PORT || 8000) + parseInt(process.env.N || 0), () =>
+let server = app.listen(base + me, () =>
   console.log('Example app listening on port ', server.address().port)
 );
