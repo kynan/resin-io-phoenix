@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+
+console.log('Hello from process', process.env.N || 0)
+
 let crypto = require('crypto'),
     express = require('express'),
     fs = require('fs');
