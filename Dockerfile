@@ -20,6 +20,8 @@ COPY package.json package.json
 # making sure to clean up the artifacts it creates in order to reduce the image size.
 RUN JOBS=MAX npm install --production --unsafe-perm && npm cache clean && rm -rf /tmp/*
 
+COPY phoenix.service /etc/systemd/system/phoenix@.service
+
 # This will copy all files in our root to the working  directory in the container
 COPY . ./
 
