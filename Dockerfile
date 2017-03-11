@@ -27,4 +27,4 @@ COPY . ./
 ENV INITSYSTEM on
 
 # server.js will run when container starts up on the device
-CMD ["npm", "start"]
+CMD ["./starter.sh"]
