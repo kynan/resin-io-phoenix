@@ -34,6 +34,9 @@ app.get('/checksum', (req, res) => {
   })
 });
 
+// Compute checksum and attach to app
+check('server.js', hash => app.locals.checksum = hash);
+
 //start a server on port 8000 + $N and log its start to our console
 let server = app.listen(base + me, () =>
   console.log('Example app listening on port ', server.address().port)
