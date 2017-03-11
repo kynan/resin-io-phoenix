@@ -5,5 +5,9 @@ set -eux
 NPROCS=${NPROCS:-4}
 
 for i in `seq 1 $NPROCS`; do
-  N=$i node server.js &
+  systemctl enable phoenix@${i}
+done
+
+for i in `seq 1 $NPROCS`; do
+  systemctl start phoenix@${i}
 done
