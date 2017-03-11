@@ -8,7 +8,8 @@ console.log(`Hello World from process ${me}/${nProcs}!`);
 
 let crypto = require('crypto'),
     express = require('express'),
-    fs = require('fs');
+    fs = require('fs'),
+    request = require('request');
 let app = express();
 
 let checksum = (str, algorithm, encoding) =>
@@ -21,6 +22,18 @@ let check = (file, cb) => {
   fs.readFile(file, (err, data) => {
     cb(checksum(data, 'sha1'))
   })
+};
+
+let ping = next => {
+  const url = `http://localhost:${base + next}/checksum`
+  console.log(`Process ${me} pinging process ${next} at ${url}`);
+  request(url), (err, res, body) => {
+    if (err)
+      console.error(err);
+    else
+      console.log(body);
+  });
+  setTimeout(ping, 1000, (next + 1) % nProcs);
 };
 
 // reply to request with "Hello World!"
@@ -36,6 +49,9 @@ app.get('/checksum', (req, res) => {
 
 // Compute checksum and attach to app
 check('server.js', hash => app.locals.checksum = hash);
+
+// Ping other processes round robin once per second
+setTimeout(ping, 1000, (me + 1) % nProcs);
 
 //start a server on port 8000 + $N and log its start to our console
 let server = app.listen(base + me, () =>
