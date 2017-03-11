@@ -20,7 +20,7 @@ app.get('/checksum', (req, res) =>
   )
 );
 
-//start a server on port 80 and log its start to our console
-let server = app.listen(process.env.PORT || 80, () =>
+//start a server on port 8000 + $N and log its start to our console
+let server = app.listen(parseInt(process.env.PORT || 8000) + parseInt(process.env.N || 0), () =>
   console.log('Example app listening on port ', server.address().port)
 );
