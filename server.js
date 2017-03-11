@@ -10,7 +10,7 @@ let checksum = (str, algorithm, encoding) =>
     .digest(encoding || 'hex');
 
 // reply to request with "Hello World!"
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/', (req, res) => res.send(`Hello World from process ${process.env.N || 0}!`));
 
 // Send SHA1 checksum of running application
 // TODO: compute checksum of application image in memory
