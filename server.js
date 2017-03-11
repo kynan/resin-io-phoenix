@@ -24,16 +24,18 @@ let check = (file, cb) => {
   })
 };
 
-let ping = next => {
+let ping = (next, checksum) => {
   const url = `http://localhost:${base + next}/checksum`
   console.log(`Process ${me} pinging process ${next} at ${url}`);
-  request(url), (err, res, body) => {
+  request(url, (err, res, body) => {
     if (err)
-      console.error(err);
+      console.error(`Process ${next} unhealthy`, err);
+    else if (body === checksum)
+      console.log(`Process ${next} healthy: got expected checksum ${body}`);
     else
-      console.log(body);
+      console.error(`Process ${next} unhealthy: got checksum ${body}, expected ${checksum}`);
   });
-  setTimeout(ping, 1000, (next + 1) % nProcs);
+  setTimeout(ping, 1000, (next + 1) % nProcs, checksum);
 };
 
 // reply to request with "Hello World!"
@@ -47,11 +49,12 @@ app.get('/checksum', (req, res) => {
   })
 });
 
-// Compute checksum and attach to app
-check('server.js', hash => app.locals.checksum = hash);
+// Compute checksum
+check('server.js', checksum => {
+  // Ping other processes round robin once per second
+  setTimeout(ping, 1000, (me + 1) % nProcs,  checksum);
+});
 
-// Ping other processes round robin once per second
-setTimeout(ping, 1000, (me + 1) % nProcs);
 
 //start a server on port 8000 + $N and log its start to our console
 let server = app.listen(base + me, () =>
