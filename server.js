@@ -17,16 +17,22 @@ let checksum = (str, algorithm, encoding) =>
     .update(str, 'utf8')
     .digest(encoding || 'hex');
 
+let check = (file, cb) => {
+  fs.readFile(file, (err, data) => {
+    cb(checksum(data, 'sha1'))
+  })
+};
+
 // reply to request with "Hello World!"
 app.get('/', (req, res) => res.send(`Hello World from process ${me}!`));
 
 // Send SHA1 checksum of running application
 // TODO: compute checksum of application image in memory
-app.get('/checksum', (req, res) =>
-  fs.readFile('server.js', (err, data) =>
-    res.send(checksum(data, 'sha1'))
-  )
-);
+app.get('/checksum', (req, res) => {
+  check('server.js', (data) => {
+    res.send(data);
+  })
+});
 
 //start a server on port 8000 + $N and log its start to our console
 let server = app.listen(base + me, () =>
