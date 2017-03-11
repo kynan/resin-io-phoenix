@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/kynan/resin-io-phoenix#readme",
   "dependencies": {
-    "express": "*"
+    "express": "*",
+    "request": "^2.81.0"
   }
 }
